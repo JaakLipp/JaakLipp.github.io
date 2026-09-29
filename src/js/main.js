@@ -53,7 +53,7 @@ bus.addEventListener('pitch', (e) => {
   rNote.textContent = noteName(e.detail.midi);
   rCents.textContent = `${cents >= 0 ? '+' : ''}${cents}¢`;
 });
-document.querySelectorAll('.mini-keys [data-midi]').forEach((b) =>
+document.querySelectorAll('.piano [data-midi]').forEach((b) =>
   b.addEventListener('click', () => play(+b.dataset.midi, { source: 'keys' })));
 
 const micBtn = document.getElementById('mic-btn');

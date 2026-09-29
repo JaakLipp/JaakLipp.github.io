@@ -173,7 +173,6 @@ main, .footer, .topbar { max-width: var(--wide); margin-inline: auto; }
   .hack { width: 78vw; }
   .carousel { margin-inline: calc(-1 * clamp(20px, 4vw, 48px)); padding-inline: clamp(20px, 4vw, 48px); scroll-padding-inline: clamp(20px, 4vw, 48px); }
   .facts > div { flex: 1 1 100%; }
-  .mini-keys button { width: 26px; }
 }
 .project .meta { font: 0.8rem var(--mono); color: var(--ink-3); margin: 0 0 8px; }
 .project h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin: 0 0 14px; }
@@ -184,26 +183,23 @@ main, .footer, .topbar { max-width: var(--wide); margin-inline: auto; }
 .project-text, .project-side { display: grid; gap: 0; align-content: start; }
 .project-text .figure { margin-top: 24px; }
 .did-wrap summary { display: none; }
+@media (max-width: 700px) { .did-label { display: none; } }
 @media (max-width: 700px) {
   .did-wrap { margin-top: 20px; }
   .did-wrap summary {
     display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none;
-    padding: 12px 14px; background: var(--surface-2); font-weight: 500; font-size: 0.95rem;
+    padding: 14px 0 4px; border-top: 1px solid var(--line); font-weight: 500; font-size: 0.95rem;
   }
   .did-wrap summary::-webkit-details-marker { display: none; }
   .did-wrap summary::after { content: "+"; font: 1.1rem var(--mono); color: var(--accent); transition: transform .3s var(--ease); }
   .did-wrap[open] summary::after { transform: rotate(45deg); }
   .did-wrap[open] .did { margin-top: 8px; }
 }
-.did { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: did; }
-.did li {
-  background: var(--surface-2); border-radius: 0; padding: 12px 14px 12px 40px;
-  color: var(--ink-2); font-size: 0.95rem; position: relative;
-}
-.did li::before {
-  counter-increment: did; content: counter(did);
-  position: absolute; left: 14px; top: 12px; font: 0.8rem var(--mono); color: var(--accent);
-}
+.did-label { font-size: 0.85rem; color: var(--ink-3); margin: 0 0 10px; }
+.did { margin: 0; padding-left: 1.1em; display: grid; gap: 12px; color: var(--ink-2); }
+.did li { padding-left: 4px; }
+.did li::marker { color: var(--accent); }
+@media (min-width: 861px) { .project-side { border-left: 1px solid var(--line); padding-left: clamp(20px, 3vw, 44px); } }
 
 .figure { margin: 0; }
 .figure figcaption { font-size: 0.82rem; color: var(--ink-3); margin-top: 10px; }
@@ -224,15 +220,28 @@ main, .footer, .topbar { max-width: var(--wide); margin-inline: auto; }
 }
 .button:active { transform: scale(0.96); }
 .button[aria-pressed="true"] { background: transparent; color: var(--accent); }
-.mini-keys { display: flex; gap: 3px; }
-.mini-keys button {
-  width: 28px; height: 36px; padding: 0 0 3px; display: flex; align-items: end; justify-content: center;
-  font: 0.7rem var(--mono); cursor: pointer;
+.piano { position: relative; display: flex; gap: 2px; height: 44px; }
+.piano .white {
+  width: 28px; height: 100%; padding: 0 0 4px; display: flex; align-items: end; justify-content: center;
+  font: 0.68rem var(--mono); cursor: pointer;
   border: 0; border-radius: 0; background: #e9e3d9; color: #3a342d;
-  transition: transform .08s, background .15s;
+  transition: background .12s;
 }
-.mini-keys button:hover { transform: translateY(2px); }
-.mini-keys button:active { background: var(--accent); }
+.piano .black {
+  position: absolute; top: 0; z-index: 1; width: 18px; height: 60%; padding: 0;
+  border: 0; border-radius: 0; background: #1b1916; cursor: pointer;
+  box-shadow: 0 0 0 1px var(--surface-2);
+  transition: background .12s;
+}
+/* each black key straddles the gap after the n-th white key (28px key + 2px gap) */
+.piano .black[data-after="1"] { left: 20px; }
+.piano .black[data-after="2"] { left: 50px; }
+.piano .black[data-after="4"] { left: 110px; }
+.piano .black[data-after="5"] { left: 140px; }
+.piano .black[data-after="6"] { left: 170px; }
+.piano .white:hover { background: #fff; }
+.piano .black:hover { background: #3a342d; }
+.piano button:active, .piano button.down { background: var(--accent); }
 .demo .readout { margin-left: auto; font: 0.85rem var(--mono); color: var(--ink-2); min-width: 8ch; text-align: right; }
 
 /* ---------- competition slides ---------- */

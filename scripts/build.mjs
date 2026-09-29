@@ -112,12 +112,17 @@ function fileNotes() {
 // ---------- templates ----------
 // The one hands-on demo on the page: sing (or tap a key) and the note lands on a staff.
 const WHITE = [['C', 60], ['D', 62], ['E', 64], ['F', 65], ['G', 67], ['A', 69], ['B', 71], ['C', 72]];
+// Black keys sit on the boundary after the white key at index `after`.
+const BLACK = [['C♯', 61, 0], ['D♯', 63, 1], ['F♯', 66, 3], ['G♯', 68, 4], ['A♯', 70, 5]];
+const pianoHTML = `<div class="piano" role="group" aria-label="Play a note">${
+  WHITE.map(([n, m]) => `<button type="button" class="white" data-midi="${m}">${n}</button>`).join('')}${
+  BLACK.map(([n, m, after]) => `<button type="button" class="black" data-midi="${m}" data-after="${after + 1}" aria-label="${n.replace('♯', ' sharp')}"></button>`).join('')}</div>`;
 const scoregenDemo = `<figure class="figure">
   <div class="demo">
     <canvas data-visual="scoregen" aria-label="Music staff showing the notes you sing or play"></canvas>
     <div class="demo-bar">
       <button class="button" id="mic-btn" type="button" aria-pressed="false">Sing a note</button>
-      <div class="mini-keys" role="group" aria-label="Play a note">${WHITE.map(([n, m]) => `<button type="button" data-midi="${m}">${n}</button>`).join('')}</div>
+      ${pianoHTML}
       <output class="readout" aria-live="polite"><span id="readout-note">–</span> <span id="readout-cents"></span></output>
     </div>
   </div>
@@ -136,7 +141,7 @@ const featuredHTML = (p, i, all) => {
     : p.visual ? `<figure class="figure"><canvas class="scene" data-visual="${p.id}" aria-hidden="true"></canvas><figcaption>${esc(p.visual.caption)}</figcaption></figure>`
     : '';
   // Open by default; on phones main.js closes these so the cards stay short.
-  const did = p.did?.length ? `<details class="did-wrap" open><summary>What I did</summary><ul class="did">${p.did.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></details>` : '';
+  const did = p.did?.length ? `<details class="did-wrap" open><summary>What I did</summary><p class="did-label">What I did</p><ul class="did">${p.did.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></details>` : '';
   const links = p.links.map((l) => `<a href="${esc(l.href)}">${esc(l.label)} ↗</a>`).join('');
   return `<article class="slide project${media ? '' : ' text-only'}" id="p-${p.id}" aria-roledescription="slide" aria-label="${i + 1} of ${all.length}">
   <div class="project-text">
