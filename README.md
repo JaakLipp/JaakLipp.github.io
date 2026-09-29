@@ -26,7 +26,7 @@ npm run dev          # build + serve on http://localhost:8080
 
 ## How updates get posted
 
-`feed.xml` (RSS) and the post pages under `/log/` are rebuilt from three sources. They are no longer shown on the homepage; to bring the Log section back, re-add the `<!--LOG-->` block in `src/index.html`.
+`feed.xml` (RSS) and the post pages under `/log/` are rebuilt from three sources. They are no longer shown on the homepage; to bring the Log section back, restore it from commit `150a4db` (the `#log` section in `src/index.html` plus `logHTML` in `scripts/build.mjs`).
 
 | Source | How to post | When it appears |
 |---|---|---|
