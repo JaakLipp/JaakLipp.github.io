@@ -1,7 +1,31 @@
 import { bus, play, startMic, stopMic, micOn, noteName } from './audio.js';
 import { scoreStaff } from './visuals.js';
+import { initCarousel } from './carousel.js';
 
+document.documentElement.classList.add('js'); // reveal animations only hide content once JS is running
 document.querySelectorAll('[data-visual="scoregen"]').forEach(scoreStaff);
+document.querySelectorAll('.carousel').forEach(initCarousel);
+
+// ---------- scroll reveals ----------
+document.querySelectorAll('.hack, .log li').forEach((el, i) => {
+  el.classList.add('reveal');
+  el.style.setProperty('--i', i % 6);
+});
+const revealer = new IntersectionObserver((entries) => entries.forEach((e) => {
+  if (e.isIntersecting) { e.target.classList.add('in'); revealer.unobserve(e.target); }
+}), { rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach((el) => revealer.observe(el));
+// The project carousel fades in as one piece.
+const work = document.getElementById('work-track');
+work.classList.add('reveal');
+revealer.observe(work);
+
+// ---------- highlight the nav link for the section in view ----------
+const navLinks = [...document.querySelectorAll('.topbar nav a')];
+const spy = new IntersectionObserver((entries) => entries.forEach((e) => {
+  if (e.isIntersecting) navLinks.forEach((a) => a.classList.toggle('active', a.hash === `#${e.target.id}`));
+}), { rootMargin: '-40% 0px -55% 0px' });
+document.querySelectorAll('main section[id], footer[id]').forEach((s) => spy.observe(s));
 
 // ---------- ScoreGen demo: sing or tap a key, the note lands on the staff ----------
 const rNote = document.getElementById('readout-note');

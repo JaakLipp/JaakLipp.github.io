@@ -11,7 +11,11 @@
         "Built the first enemy, a wolf with a state-machine AI and readable attack telegraphs, taking it from Blender model to in-game.",
         "Set up scripted Windows and Linux builds, plus a playtest protocol that checks readability at split-screen scale on a TV."
       ],
-      "stack": ["Godot 4", "GDScript", "Blender"],
+      "stack": [
+        "Godot 4",
+        "GDScript",
+        "Blender"
+      ],
       "links": [],
       "image": null,
       "play": null
@@ -27,9 +31,18 @@
         "Reproduced categorical perception: discriminability is compressed within a note category, with a within/across d′ ratio of 2.09 against 1.00 for the control.",
         "Wrote a synthetic tone and melody generator with unit tests, and a variational information-bottleneck autoencoder to test the critical-period hypothesis."
       ],
-      "stack": ["Python", "PyTorch", "Psychophysics"],
+      "stack": [
+        "Python",
+        "PyTorch",
+        "Psychophysics"
+      ],
       "links": [],
-      "figure": { "src": "assets/projects/perfect-pitch-identification.png", "class": "plot", "alt": "Two plots of label probability against detuning in cents. The recurrent model switches from one note to the next abruptly at 50 cents; the control model switches gradually.", "caption": "Identification curves (seed 0). Left: with recurrence, the label flips sharply at the halfway point. Right: without recurrence it changes gradually." }
+      "figure": {
+        "src": "assets/projects/perfect-pitch-identification.png",
+        "class": "plot",
+        "alt": "Two plots of label probability against detuning in cents. The recurrent model switches from one note to the next abruptly at 50 cents; the control model switches gradually.",
+        "caption": "Identification curves (seed 0). Left: with recurrence, the label flips sharply at the halfway point. Right: without recurrence it changes gradually."
+      }
     },
     {
       "id": "scoregen",
@@ -38,19 +51,86 @@
       "role": "Capstone, team of 4",
       "summary": "A desktop app that turns live monophonic audio into sheet music. We wrote our own signal-processing engine for pitch detection, onset detection and rhythm quantisation. It exports to WAV, MusicXML and PDF.",
       "did": [],
-      "stack": ["C++", "Signal processing", "MusicXML"],
-      "links": [{ "label": "GitHub", "href": "https://github.com/JaakLipp/ScoreGen" }],
+      "stack": [
+        "C++",
+        "Signal processing",
+        "MusicXML"
+      ],
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/JaakLipp/ScoreGen"
+        }
+      ],
       "demo": true
     }
   ],
   "archive": [
-    { "title": "AnswerMe", "event": "Hack the MIST", "year": 2023, "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Built with Flask and Twilio.", "award": "3rd overall", "href": "https://devpost.com/software/answerme-ce2ip0" },
-    { "title": "World's Most Useful Website", "event": "uOttaHack", "year": 2023, "blurb": "A full-stack React, Express and MongoDB app that does absolutely nothing, on purpose. I learned JavaScript that weekend.", "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s" },
-    { "title": "SightRead", "event": "DeltaHacks 9", "year": 2023, "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. Built with SwiftUI and OpenCV.", "href": "https://github.com/LaZeAsh/SightRead" },
-    { "title": "SteakAI", "event": "Hack Western 9", "year": 2022, "blurb": "Take a photo of your steak and a Keras CNN tells you how done it is.", "href": "https://github.com/JaakLipp/HackWestern2022" },
-    { "title": "Sailor's Best Friend", "event": "McMaster Engineering Competition", "year": 2022, "blurb": "A Python tool for sailors built on Shapely geometry.", "href": "https://github.com/JaakLipp/MacEngComp2022" },
-    { "title": "My first website", "event": "DeltaHacks 8", "year": 2022, "blurb": "Plain HTML and CSS, built over one weekend.", "href": "https://devpost.com/software/my-website-t2rfh3" },
-    { "title": "NewHacks entry", "event": "NewHacks", "year": 2021, "blurb": "My team's attempt, in Python.", "href": "https://github.com/JaakLipp/NewHacks2021" },
-    { "title": "MEC 2021 submission", "event": "McMaster Engineering Competition", "year": 2021, "blurb": "My team's entry to the 2021 programming competition.", "href": "https://github.com/JaakLipp/MacEngComp2021" }
+    {
+      "title": "Tic-tac-toe robot",
+      "event": "McMaster Engineering Competition, Senior Design",
+      "year": 2023,
+      "blurb": "We built a working robot in 6 hours. It was driven remotely through an obstacle course and moved game pieces to play tic-tac-toe. Built with Amelie.",
+      "award": "3rd place",
+      "href": null
+    },
+    {
+      "title": "AnswerMe",
+      "event": "Hack the MIST",
+      "year": 2023,
+      "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Built with Flask and Twilio.",
+      "award": "3rd overall",
+      "href": "https://devpost.com/software/answerme-ce2ip0"
+    },
+    {
+      "title": "World's Most Useful Website",
+      "event": "uOttaHack",
+      "year": 2023,
+      "blurb": "A full-stack React, Express and MongoDB app that does absolutely nothing, on purpose. I learned JavaScript that weekend.",
+      "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s"
+    },
+    {
+      "title": "SightRead",
+      "event": "DeltaHacks 9",
+      "year": 2023,
+      "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. Built with SwiftUI and OpenCV.",
+      "href": "https://github.com/LaZeAsh/SightRead"
+    },
+    {
+      "title": "SteakAI",
+      "event": "Hack Western 9",
+      "year": 2022,
+      "blurb": "Take a photo of your steak and a Keras CNN tells you how done it is.",
+      "href": "https://github.com/JaakLipp/HackWestern2022"
+    },
+    {
+      "title": "Sailor's Best Friend",
+      "event": "McMaster Engineering Competition",
+      "year": 2022,
+      "blurb": "A Python tool for sailors built on Shapely geometry.",
+      "href": "https://github.com/JaakLipp/MacEngComp2022",
+      "award": "3rd place"
+    },
+    {
+      "title": "My first website",
+      "event": "DeltaHacks 8",
+      "year": 2022,
+      "blurb": "Plain HTML and CSS, built over one weekend.",
+      "href": "https://devpost.com/software/my-website-t2rfh3"
+    },
+    {
+      "title": "NewHacks entry",
+      "event": "NewHacks",
+      "year": 2021,
+      "blurb": "My team's attempt, in Python.",
+      "href": "https://github.com/JaakLipp/NewHacks2021"
+    },
+    {
+      "title": "MEC 2021 submission",
+      "event": "McMaster Engineering Competition",
+      "year": 2021,
+      "blurb": "My team's entry to the 2021 programming competition.",
+      "href": "https://github.com/JaakLipp/MacEngComp2021"
+    }
   ]
 }

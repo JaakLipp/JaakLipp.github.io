@@ -129,28 +129,34 @@ const figureHTML = (f) => `<figure class="figure">
   ${f.caption ? `<figcaption>${esc(f.caption)}</figcaption>` : ''}
 </figure>`;
 
-const featuredHTML = (p) => {
+const featuredHTML = (p, i, all) => {
   const media = p.demo ? scoregenDemo
     : p.play ? `<figure class="figure"><button class="button" type="button" data-play="${esc(p.play)}" data-title="${esc(p.title)}">Play in the browser</button></figure>`
     : p.figure || p.image ? figureHTML(p.figure || p.image) : '';
   const did = p.did?.length ? `<ul class="did">${p.did.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : '';
-  const links = p.links.map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`).join('');
-  return `<article class="project" id="p-${p.id}">
-  <h3>${esc(p.title)}</h3>
-  <p class="meta">${esc(p.year)} · ${esc(p.role)}</p>
-  <p>${esc(p.summary)}</p>
-  ${did}
-  <p class="stack">${p.stack.map(esc).join(' · ')}</p>
-  ${links ? `<div class="links">${links}</div>` : ''}
-  ${media}
+  const links = p.links.map((l) => `<a href="${esc(l.href)}">${esc(l.label)} ↗</a>`).join('');
+  return `<article class="slide project${media ? '' : ' text-only'}" id="p-${p.id}" aria-roledescription="slide" aria-label="${i + 1} of ${all.length}">
+  <div class="project-text">
+    <p class="meta">${esc(p.year)} · ${esc(p.role)}</p>
+    <h3>${esc(p.title)}</h3>
+    <p class="summary">${esc(p.summary)}</p>
+    <ul class="chips">${p.stack.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
+    ${links ? `<div class="links">${links}</div>` : ''}
+    ${did ? media : ''}
+  </div>
+  ${did || media ? `<div class="project-side">${did || media}</div>` : ''}
 </article>`;
 };
 
-const archiveHTML = (h) => `<li>
-  <span class="year">${h.year}</span>
-  <div><a class="title" href="${esc(h.href)}">${esc(h.title)}</a> <span class="event">at ${esc(h.event)}</span>${h.award ? ` · <span class="award">${esc(h.award)}</span>` : ''}</div>
+const archiveHTML = (h) => {
+  const title = h.href ? `<a href="${esc(h.href)}">${esc(h.title)}</a>` : esc(h.title);
+  return `<li class="slide hack">
+  <p class="when">${h.year} · ${esc(h.event)}</p>
+  <h3>${title}</h3>
   <p>${esc(h.blurb)}</p>
+  ${h.award ? `<p class="award">${esc(h.award)}</p>` : ''}
 </li>`;
+};
 
 const logHTML = (e) => {
   const href = e.slug ? `log/${e.slug}.html` : e.href;
@@ -248,9 +254,9 @@ ${p.year} · ${p.role} · ${p.stack.join(', ')}
 
 ${p.summary}
 ${p.did?.length ? '\n' + p.did.map((d) => `- ${d}`).join('\n') + '\n' : ''}${p.links.length ? '\nLinks: ' + p.links.map((l) => `[${l.label}](${l.href})`).join(', ') + '\n' : ''}`).join('\n')}
-## Hackathons
+## Hackathons and competitions
 
-${projects.archive.map((h) => `- ${h.year}, ${h.event}: [${h.title}](${h.href})${h.award ? ` (${h.award})` : ''}. ${h.blurb}`).join('\n')}
+${projects.archive.map((h) => `- ${h.year}, ${h.event}: ${h.href ? `[${h.title}](${h.href})` : h.title}${h.award ? ` (${h.award})` : ''}. ${h.blurb}`).join('\n')}
 
 ## Optional
 
@@ -289,7 +295,7 @@ const facts = [
   ...profile.experience.map((e) => ['Now', esc(`${e.role}, ${e.org}${when(e)}`)]),
   ...profile.education.map((e) => ['Studied', esc(`${e.degree}, ${e.org}${when(e)}`)]),
   ['Email', `<a href="mailto:${esc(profile.email)}">${esc(profile.email)}</a>`],
-].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('\n        ');
+].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n        ');
 
 let html = fs.readFileSync(path.join(SRC, 'index.html'), 'utf8');
 html = html
