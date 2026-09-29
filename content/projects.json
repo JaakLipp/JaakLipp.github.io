@@ -1,121 +1,56 @@
 {
   "featured": [
     {
-      "id": "scoregen",
-      "title": "ScoreGen",
-      "year": "2024–25",
-      "tagline": "Sing a melody, get sheet music.",
-      "summary": "Capstone project: a desktop app that turns live monophonic audio into sheet music. We wrote the signal-processing engine ourselves (pitch detection, onset detection, rhythm quantisation) and export to MusicXML and PDF. The demo here is a tiny browser version of the first step.",
-      "role": "Capstone team of 4",
-      "stack": [
-        "C++",
-        "DSP",
-        "MusicXML"
+      "id": "the-long-road",
+      "title": "The Long Road",
+      "year": "2026, in development",
+      "role": "Solo project",
+      "summary": "A couch co-op action roguelite for 1–4 players in split-screen. It has Sifu-style combat and a branching Slay-the-Spire-style map, and at each campfire the party votes on which route to take.",
+      "did": [
+        "Wrote the design doc, a phase-by-phase roadmap, and a decision log. A script turns the roadmap into GitHub issues and milestones.",
+        "Built the first enemy, a wolf with a state-machine AI and readable attack telegraphs, taking it from Blender model to in-game.",
+        "Set up scripted Windows and Linux builds, plus a playtest protocol that checks readability at split-screen scale on a TV."
       ],
-      "links": [
-        {
-          "label": "GitHub",
-          "href": "https://github.com/JaakLipp/ScoreGen"
-        }
-      ]
+      "stack": ["Godot 4", "GDScript", "Blender"],
+      "links": [],
+      "image": null,
+      "play": null
     },
     {
       "id": "perfect-pitch",
       "title": "perfect-pitch",
-      "year": "2026",
-      "tagline": "Why can some people just name a note?",
-      "summary": "A research model of how people with absolute pitch identify notes. It tests four hypotheses against human psychophysics: an information-bottleneck autoencoder for the critical-period idea, and a recurrent chroma-ring attractor that turns a smooth frequency into a hard category. Predictions are written down before each training run.",
-      "role": "Solo research",
-      "stack": [
-        "Python",
-        "PyTorch",
-        "Psychophysics"
+      "year": "2026, in progress",
+      "role": "Solo research project",
+      "summary": "A computational model of how people with absolute pitch identify notes. I test four hypotheses about the mechanism against findings from human psychophysics, and write down the predictions before each training run.",
+      "did": [
+        "Built a recurrent chroma-ring attractor in PyTorch. Recurrence made the category boundary about 4× sharper than a no-recurrence control (0.66 vs 0.16 per cent, 3 seeds).",
+        "Reproduced categorical perception: discriminability is compressed within a note category, with a within/across d′ ratio of 2.09 against 1.00 for the control.",
+        "Wrote a synthetic tone and melody generator with unit tests, and a variational information-bottleneck autoencoder to test the critical-period hypothesis."
       ],
+      "stack": ["Python", "PyTorch", "Psychophysics"],
       "links": [],
-      "status": "In progress"
+      "figure": { "src": "assets/projects/perfect-pitch-identification.png", "class": "plot", "alt": "Two plots of label probability against detuning in cents. The recurrent model switches from one note to the next abruptly at 50 cents; the control model switches gradually.", "caption": "Identification curves (seed 0). Left: with recurrence, the label flips sharply at the halfway point. Right: without recurrence it changes gradually." }
     },
     {
-      "id": "the-long-road",
-      "title": "The Long Road",
-      "year": "2026",
-      "tagline": "Couch co-op roguelite, 1–4 players, split-screen.",
-      "summary": "Weighty, Sifu-style combat with a branching Slay-the-Spire map. At every campfire the party votes on the route, so the couch gets an argument. Built in Godot 4 with a painterly low-poly look, and the art style is also what keeps 3D split-screen cheap enough to run.",
-      "role": "Solo dev · design, code, art pipeline",
-      "stack": [
-        "Godot 4",
-        "GDScript",
-        "Game design"
-      ],
-      "links": [],
-      "status": "In development",
-      "play": null
+      "id": "scoregen",
+      "title": "ScoreGen",
+      "year": "2024–25",
+      "role": "Capstone, team of 4",
+      "summary": "A desktop app that turns live monophonic audio into sheet music. We wrote our own signal-processing engine for pitch detection, onset detection and rhythm quantisation. It exports to WAV, MusicXML and PDF.",
+      "did": [],
+      "stack": ["C++", "Signal processing", "MusicXML"],
+      "links": [{ "label": "GitHub", "href": "https://github.com/JaakLipp/ScoreGen" }],
+      "demo": true
     }
   ],
   "archive": [
-    {
-      "title": "AnswerMe",
-      "event": "Hack the MIST",
-      "year": 2023,
-      "img": "HackTheMIST.png",
-      "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Flask + Twilio.",
-      "award": "3rd overall",
-      "href": "https://devpost.com/software/answerme-ce2ip0"
-    },
-    {
-      "title": "World's Most Useful Website",
-      "event": "uOttaHack",
-      "year": 2023,
-      "img": "UOttaHack.png",
-      "blurb": "A full-stack React/Express/Mongo app that does absolutely nothing. I learned all my JavaScript that weekend.",
-      "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s"
-    },
-    {
-      "title": "SightRead",
-      "event": "DeltaHacks 9",
-      "year": 2023,
-      "img": "DeltaHacks9.png",
-      "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. SwiftUI + OpenCV.",
-      "href": "https://github.com/LaZeAsh/SightRead"
-    },
-    {
-      "title": "SteakAI",
-      "event": "Hack Western 9",
-      "year": 2022,
-      "img": "HackWestern2022.png",
-      "blurb": "Take a photo of your steak and a Keras CNN tells you how done it is.",
-      "href": "https://github.com/JaakLipp/HackWestern2022"
-    },
-    {
-      "title": "Sailor's Best Friend",
-      "event": "McMaster Eng. Competition",
-      "year": 2022,
-      "img": "MacEngComp2022.png",
-      "blurb": "A Python tool for sailors built on Shapely geometry, made against the competition clock.",
-      "href": "https://github.com/JaakLipp/MacEngComp2022"
-    },
-    {
-      "title": "My first website",
-      "event": "DeltaHacks 8",
-      "year": 2022,
-      "img": "DeltaHacks2022.png",
-      "blurb": "Where this site started: plain HTML and CSS, built over one weekend.",
-      "href": "https://devpost.com/software/my-website-t2rfh3"
-    },
-    {
-      "title": "NewHacks entry",
-      "event": "NewHacks",
-      "year": 2021,
-      "img": "NewHacks2022.png",
-      "blurb": "Our group's attempt, in Python.",
-      "href": "https://github.com/JaakLipp/NewHacks2021"
-    },
-    {
-      "title": "MEC 2021",
-      "event": "McMaster Eng. Competition",
-      "year": 2021,
-      "img": "MacEngComp2021.png",
-      "blurb": "Our team's submission to the 2021 programming competition.",
-      "href": "https://github.com/JaakLipp/MacEngComp2021"
-    }
+    { "title": "AnswerMe", "event": "Hack the MIST", "year": 2023, "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Built with Flask and Twilio.", "award": "3rd overall", "href": "https://devpost.com/software/answerme-ce2ip0" },
+    { "title": "World's Most Useful Website", "event": "uOttaHack", "year": 2023, "blurb": "A full-stack React, Express and MongoDB app that does absolutely nothing, on purpose. I learned JavaScript that weekend.", "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s" },
+    { "title": "SightRead", "event": "DeltaHacks 9", "year": 2023, "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. Built with SwiftUI and OpenCV.", "href": "https://github.com/LaZeAsh/SightRead" },
+    { "title": "SteakAI", "event": "Hack Western 9", "year": 2022, "blurb": "Take a photo of your steak and a Keras CNN tells you how done it is.", "href": "https://github.com/JaakLipp/HackWestern2022" },
+    { "title": "Sailor's Best Friend", "event": "McMaster Engineering Competition", "year": 2022, "blurb": "A Python tool for sailors built on Shapely geometry.", "href": "https://github.com/JaakLipp/MacEngComp2022" },
+    { "title": "My first website", "event": "DeltaHacks 8", "year": 2022, "blurb": "Plain HTML and CSS, built over one weekend.", "href": "https://devpost.com/software/my-website-t2rfh3" },
+    { "title": "NewHacks entry", "event": "NewHacks", "year": 2021, "blurb": "My team's attempt, in Python.", "href": "https://github.com/JaakLipp/NewHacks2021" },
+    { "title": "MEC 2021 submission", "event": "McMaster Engineering Competition", "year": 2021, "blurb": "My team's entry to the 2021 programming competition.", "href": "https://github.com/JaakLipp/MacEngComp2021" }
   ]
 }

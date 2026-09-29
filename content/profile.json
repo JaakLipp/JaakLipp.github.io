@@ -1,0 +1,35 @@
+{
+  "name": "Jackson Lippert",
+  "headline": "Software developer",
+  "summary": "Software developer at RBC with a Software Engineering degree from McMaster University. Outside work I'm building a couch co-op game in Godot and a model of how people with perfect pitch identify notes. Before that I did eight hackathons in three years.",
+  "email": "lippert.22j@gmail.com",
+  "url": "https://jaaklipp.github.io",
+  "sameAs": [
+    "https://github.com/JaakLipp",
+    "https://www.linkedin.com/in/jacksonlippert/"
+  ],
+  "experience": [
+    {
+      "role": "Software Developer",
+      "org": "RBC",
+      "when": ""
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Eng. Software Engineering",
+      "org": "McMaster University",
+      "when": ""
+    }
+  ],
+  "skills": [
+    "C++",
+    "Python",
+    "PyTorch",
+    "JavaScript",
+    "Java",
+    "Godot / GDScript",
+    "Signal processing",
+    "Machine learning"
+  ]
+}
