@@ -23,10 +23,10 @@
 <body>
   <header class="topbar">
     <a class="name" href="#top">Jackson Lippert</a>
-    <nav aria-label="Sections">
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><span></span><span></span></button>
+    <nav id="site-nav" aria-label="Sections">
       <a href="#work">Projects</a>
       <a href="#hackathons">Competitions</a>
-      <a href="#log">Log</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -46,15 +46,15 @@
           <h2 id="work-h">Projects</h2>
           <p class="section-note">What I'm building now, and the capstone that came before it.</p>
         </div>
-        <div class="carousel-nav" data-for="work-track">
-          <span class="count" aria-live="polite"></span>
-          <button type="button" class="nav-btn" data-dir="-1" aria-label="Previous project">←</button>
-          <button type="button" class="nav-btn" data-dir="1" aria-label="Next project">→</button>
+      </div>
+      <div class="carousel-wrap">
+        <button type="button" class="nav-btn prev" aria-label="Previous project">←</button>
+        <div class="carousel projects-track" id="work-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Projects">
+          <!--FEATURED-->
         </div>
+        <button type="button" class="nav-btn next" aria-label="Next project">→</button>
       </div>
-      <div class="carousel projects-track" id="work-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Projects">
-        <!--FEATURED-->
-      </div>
+      <div class="pager" role="group" aria-label="Choose a project"></div>
     </section>
 
     <section id="hackathons" class="band" aria-labelledby="hack-h">
@@ -63,27 +63,15 @@
           <h2 id="hack-h">Hackathons &amp; competitions</h2>
           <p class="section-note">2021–2023. Most were my first time with the stack: learn it on Saturday, ship it by Sunday.</p>
         </div>
-        <div class="carousel-nav" data-for="hack-track">
-          <button type="button" class="nav-btn" data-dir="-1" aria-label="Scroll back">←</button>
-          <button type="button" class="nav-btn" data-dir="1" aria-label="Scroll forward">→</button>
-        </div>
       </div>
-      <ol class="carousel hacks-track" id="hack-track" tabindex="0" role="region" aria-label="Hackathons and competitions">
-        <!--ARCHIVE-->
-      </ol>
-      <div class="progress" aria-hidden="true"><span></span></div>
-    </section>
-
-    <section id="log" class="band" aria-labelledby="log-h">
-      <div class="section-head reveal">
-        <div>
-          <h2 id="log-h">Log</h2>
-          <p class="section-note">Notes and shipped work, rebuilt from GitHub every day. Last updated <!--BUILT_AT-->. <a href="feed.xml">RSS</a></p>
-        </div>
+      <div class="carousel-wrap">
+        <button type="button" class="nav-btn prev" aria-label="Scroll back">←</button>
+        <ol class="carousel hacks-track" id="hack-track" tabindex="0" role="region" aria-label="Hackathons and competitions">
+          <!--ARCHIVE-->
+        </ol>
+        <button type="button" class="nav-btn next" aria-label="Scroll forward">→</button>
       </div>
-      <ol class="log">
-        <!--LOG-->
-      </ol>
+      <div class="pager" role="group" aria-label="Jump to a competition"></div>
     </section>
   </main>
 

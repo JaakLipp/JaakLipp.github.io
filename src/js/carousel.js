@@ -1,23 +1,48 @@
-// Horizontal carousels: native scroll-snap for touch, plus arrow buttons,
-// arrow keys, mouse drag, a progress bar, and (for projects) dimming the
-// slides that aren't in focus.
+// Horizontal carousels: native scroll-snap for touch, plus side arrows, arrow
+// keys, mouse drag, an eased glide between slides, and a row of position bars
+// underneath that shows which slides are in view (click one to jump there).
+
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2); // easeInOutCubic
 
 export function initCarousel(track) {
   const section = track.closest('section');
-  const [prev, next] = section.querySelectorAll('.nav-btn');
-  const bar = section.querySelector('.progress span');
-  const count = section.querySelector('.count');
+  const prev = section.querySelector('.nav-btn.prev');
+  const next = section.querySelector('.nav-btn.next');
+  const pager = section.querySelector('.pager');
   const slides = [...track.children];
-  const smooth = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  const isProjects = track.classList.contains('projects-track');
 
-  // Scroll to the neighbouring slide in the given direction.
+  const starts = () => slides.map((s) => s.offsetLeft - track.offsetLeft);
+  const max = () => track.scrollWidth - track.clientWidth;
+
+  // Glide to an x position. Snapping is paused while we animate, or the
+  // browser would fight every frame.
+  let anim = 0;
+  const glideTo = (x) => {
+    const to = Math.max(0, Math.min(max(), x));
+    cancelAnimationFrame(anim);
+    if (reduceMotion) { track.scrollLeft = to; return; }
+    const from = track.scrollLeft;
+    const dur = Math.min(900, 420 + Math.abs(to - from) * 0.35);
+    const t0 = performance.now();
+    track.classList.add('gliding');
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / dur);
+      track.scrollLeft = from + (to - from) * ease(t);
+      if (t < 1) anim = requestAnimationFrame(step);
+      else track.classList.remove('gliding');
+    };
+    anim = requestAnimationFrame(step);
+  };
+
   const go = (dir) => {
     const x = track.scrollLeft;
-    const starts = slides.map((s) => s.offsetLeft - track.offsetLeft);
+    const s = starts();
     const target = dir > 0
-      ? starts.find((s) => s > x + 4) ?? track.scrollWidth
-      : [...starts].reverse().find((s) => s < x - 4) ?? 0;
-    track.scrollTo({ left: target, behavior: smooth });
+      ? s.find((v) => v > x + 4) ?? max()
+      : [...s].reverse().find((v) => v < x - 4) ?? 0;
+    glideTo(target);
   };
   prev.addEventListener('click', () => go(-1));
   next.addEventListener('click', () => go(1));
@@ -26,32 +51,42 @@ export function initCarousel(track) {
     if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
   });
 
-  const update = () => {
-    const max = track.scrollWidth - track.clientWidth;
-    const p = max > 0 ? track.scrollLeft / max : 1;
-    if (bar) bar.style.width = `${Math.max(p, track.clientWidth / track.scrollWidth) * 100}%`;
-    if (count) {
-      const starts = slides.map((sl) => sl.offsetLeft - track.offsetLeft);
-      const i = track.scrollLeft >= max - 2 ? slides.length - 1
-        : starts.reduce((best, st, j) => (Math.abs(st - track.scrollLeft) < Math.abs(starts[best] - track.scrollLeft) ? j : best), 0);
-      count.textContent = `${i + 1} / ${slides.length}`;
-    }
-    prev.disabled = track.scrollLeft <= 2;
-    next.disabled = track.scrollLeft >= max - 2;
-  };
-  track.addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', update);
-  update();
+  // Position bars: one per slide.
+  const bars = slides.map((s, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', `${i + 1}: ${s.querySelector('h3')?.textContent ?? `item ${i + 1}`}`);
+    b.addEventListener('click', () => glideTo(starts()[i]));
+    pager.append(b);
+    return b;
+  });
 
-  // The slide that is mostly in view gets `.current`; CSS dims the others.
-  if (track.classList.contains('projects-track')) {
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-      e.target.classList.toggle('current', e.intersectionRatio > 0.6);
-    }), { root: track, threshold: [0, 0.6, 1] });
-    slides.forEach((s) => io.observe(s));
+  // A slide counts as "in view" when most of it is visible. For projects,
+  // only the first such slide is current; the others dim.
+  const visible = new Set();
+  const refresh = () => {
+    const inView = slides.filter((s) => visible.has(s));
+    const current = isProjects ? (track.scrollLeft >= max() - 2 ? inView.at(-1) : inView[0]) : null;
+    slides.forEach((s, i) => {
+      const on = isProjects ? s === current : visible.has(s);
+      bars[i].classList.toggle('on', on);
+      bars[i].setAttribute('aria-current', on ? 'true' : 'false');
+      if (isProjects) s.classList.toggle('current', on);
+    });
+    prev.classList.toggle('hide', track.scrollLeft <= 2);
+    next.classList.toggle('hide', track.scrollLeft >= max() - 2);
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.intersectionRatio > 0.6 ? visible.add(e.target) : visible.delete(e.target)));
+    refresh();
+  }, { root: track, threshold: [0, 0.6, 1] });
+  slides.forEach((s) => io.observe(s));
+  track.addEventListener('scroll', refresh, { passive: true });
+  addEventListener('resize', refresh);
+  if (isProjects) {
     requestAnimationFrame(() => track.classList.add('ready'));
-    slides.forEach((s) => s.addEventListener('click', () => {
-      if (!s.classList.contains('current')) s.scrollIntoView({ behavior: smooth, block: 'nearest', inline: 'start' });
+    slides.forEach((s, i) => s.addEventListener('click', () => {
+      if (!s.classList.contains('current')) glideTo(starts()[i]);
     }));
   }
 
@@ -63,6 +98,7 @@ export function initCarousel(track) {
   }, { capture: true });
   track.addEventListener('pointerdown', (e) => {
     if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('button, a, canvas, input')) return;
+    cancelAnimationFrame(anim);
     drag = { x: e.clientX, left: track.scrollLeft, moved: false };
   });
   addEventListener('pointermove', (e) => {
@@ -79,6 +115,9 @@ export function initCarousel(track) {
     track.classList.remove('dragging');
     if (!moved) return;
     swallowClickUntil = performance.now() + 80;
-    if (scrolled !== 0) go(Math.sign(scrolled)); // finish the move to the next slide that way
+    // Finish the move to the next slide in the drag direction.
+    const s = starts();
+    const x = track.scrollLeft;
+    glideTo(scrolled > 0 ? s.find((v) => v > x) ?? max() : [...s].reverse().find((v) => v < x) ?? 0);
   });
 }

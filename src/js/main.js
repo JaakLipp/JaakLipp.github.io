@@ -1,13 +1,14 @@
 import { bus, play, startMic, stopMic, micOn, noteName } from './audio.js';
-import { scoreStaff } from './visuals.js';
+import { scoreStaff, longRoad } from './visuals.js';
 import { initCarousel } from './carousel.js';
 
 document.documentElement.classList.add('js'); // reveal animations only hide content once JS is running
 document.querySelectorAll('[data-visual="scoregen"]').forEach(scoreStaff);
+document.querySelectorAll('[data-visual="the-long-road"]').forEach(longRoad);
 document.querySelectorAll('.carousel').forEach(initCarousel);
 
 // ---------- scroll reveals ----------
-document.querySelectorAll('.hack, .log li').forEach((el, i) => {
+document.querySelectorAll('.hack').forEach((el, i) => {
   el.classList.add('reveal');
   el.style.setProperty('--i', i % 6);
 });
@@ -19,6 +20,17 @@ document.querySelectorAll('.reveal').forEach((el) => revealer.observe(el));
 const work = document.getElementById('work-track');
 work.classList.add('reveal');
 revealer.observe(work);
+
+// On phones, fold each project's "What I did" list so the cards stay short.
+if (matchMedia('(max-width: 700px)').matches) document.querySelectorAll('.did-wrap').forEach((d) => { d.open = false; });
+
+// ---------- mobile menu ----------
+const menuBtn = document.querySelector('.menu-btn');
+const nav = document.getElementById('site-nav');
+const setMenu = (open) => { menuBtn.setAttribute('aria-expanded', open); nav.classList.toggle('open', open); };
+menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
+nav.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
 // ---------- highlight the nav link for the section in view ----------
 const navLinks = [...document.querySelectorAll('.topbar nav a')];

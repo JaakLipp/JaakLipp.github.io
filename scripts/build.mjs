@@ -132,8 +132,11 @@ const figureHTML = (f) => `<figure class="figure">
 const featuredHTML = (p, i, all) => {
   const media = p.demo ? scoregenDemo
     : p.play ? `<figure class="figure"><button class="button" type="button" data-play="${esc(p.play)}" data-title="${esc(p.title)}">Play in the browser</button></figure>`
-    : p.figure || p.image ? figureHTML(p.figure || p.image) : '';
-  const did = p.did?.length ? `<ul class="did">${p.did.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : '';
+    : p.figure || p.image ? figureHTML(p.figure || p.image)
+    : p.visual ? `<figure class="figure"><canvas class="scene" data-visual="${p.id}" aria-hidden="true"></canvas><figcaption>${esc(p.visual.caption)}</figcaption></figure>`
+    : '';
+  // Open by default; on phones main.js closes these so the cards stay short.
+  const did = p.did?.length ? `<details class="did-wrap" open><summary>What I did</summary><ul class="did">${p.did.map((d) => `<li>${esc(d)}</li>`).join('')}</ul></details>` : '';
   const links = p.links.map((l) => `<a href="${esc(l.href)}">${esc(l.label)} ↗</a>`).join('');
   return `<article class="slide project${media ? '' : ' text-only'}" id="p-${p.id}" aria-roledescription="slide" aria-label="${i + 1} of ${all.length}">
   <div class="project-text">
@@ -151,18 +154,11 @@ const featuredHTML = (p, i, all) => {
 const archiveHTML = (h) => {
   const title = h.href ? `<a href="${esc(h.href)}">${esc(h.title)}</a>` : esc(h.title);
   return `<li class="slide hack">
+  ${h.img ? `<img src="assets/projects/${esc(h.img)}" alt="${esc(h.event)} ${h.year} logo" loading="lazy" width="800" height="600">` : ''}
   <p class="when">${h.year} · ${esc(h.event)}</p>
   <h3>${title}</h3>
   <p>${esc(h.blurb)}</p>
   ${h.award ? `<p class="award">${esc(h.award)}</p>` : ''}
-</li>`;
-};
-
-const logHTML = (e) => {
-  const href = e.slug ? `log/${e.slug}.html` : e.href;
-  return `<li>
-  <time datetime="${e.date}">${fmtDate(e.date)}</time>
-  <div class="entry"><a href="${esc(href)}">${esc(e.title)}</a><span class="kind">${esc(e.kind)}</span>${e.summary ? `<p>${esc(e.summary)}</p>` : ''}</div>
 </li>`;
 };
 
@@ -306,9 +302,7 @@ html = html
   .replace('<!--SUMMARY-->', esc(profile.summary))
   .replace('<!--FACTS-->', facts)
   .replace('<!--FEATURED-->', projects.featured.map(featuredHTML).join('\n'))
-  .replace('<!--ARCHIVE-->', projects.archive.map(archiveHTML).join('\n'))
-  .replace('<!--LOG-->', log.length ? log.map(logHTML).join('\n') : '<li><span></span><div class="entry"><p>Nothing here yet.</p></div></li>')
-  .replace('<!--BUILT_AT-->', `<time datetime="${builtAt.toISOString()}">${fmtDate(builtAt)}</time>`);
+  .replace('<!--ARCHIVE-->', projects.archive.map(archiveHTML).join('\n'));
 if (html.includes('<!--')) throw new Error('Unfilled template marker in index.html');
 fs.writeFileSync(path.join(DIST, 'index.html'), html);
 

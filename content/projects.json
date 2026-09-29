@@ -18,7 +18,10 @@
       ],
       "links": [],
       "image": null,
-      "play": null
+      "play": null,
+      "visual": {
+        "caption": "An illustration of the game's mood, drawn in code. Move your mouse over it. Not an in-game screenshot."
+      }
     },
     {
       "id": "perfect-pitch",
@@ -72,7 +75,8 @@
       "year": 2023,
       "blurb": "We built a working robot in 6 hours. It was driven remotely through an obstacle course and moved game pieces to play tic-tac-toe. Built with Amelie.",
       "award": "3rd place",
-      "href": null
+      "href": null,
+      "img": "MacEngComp2023.png"
     },
     {
       "title": "AnswerMe",
@@ -80,28 +84,32 @@
       "year": 2023,
       "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Built with Flask and Twilio.",
       "award": "3rd overall",
-      "href": "https://devpost.com/software/answerme-ce2ip0"
+      "href": "https://devpost.com/software/answerme-ce2ip0",
+      "img": "HackTheMIST.png"
     },
     {
       "title": "World's Most Useful Website",
       "event": "uOttaHack",
       "year": 2023,
       "blurb": "A full-stack React, Express and MongoDB app that does absolutely nothing, on purpose. I learned JavaScript that weekend.",
-      "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s"
+      "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s",
+      "img": "UOttaHack.png"
     },
     {
       "title": "SightRead",
       "event": "DeltaHacks 9",
       "year": 2023,
       "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. Built with SwiftUI and OpenCV.",
-      "href": "https://github.com/LaZeAsh/SightRead"
+      "href": "https://github.com/LaZeAsh/SightRead",
+      "img": "DeltaHacks9.png"
     },
     {
       "title": "SteakAI",
       "event": "Hack Western 9",
       "year": 2022,
       "blurb": "Take a photo of your steak and a Keras CNN tells you how done it is.",
-      "href": "https://github.com/JaakLipp/HackWestern2022"
+      "href": "https://github.com/JaakLipp/HackWestern2022",
+      "img": "HackWestern2022.png"
     },
     {
       "title": "Sailor's Best Friend",
@@ -109,28 +117,32 @@
       "year": 2022,
       "blurb": "A Python tool for sailors built on Shapely geometry.",
       "href": "https://github.com/JaakLipp/MacEngComp2022",
-      "award": "3rd place"
+      "award": "3rd place",
+      "img": "MacEngComp2022.png"
     },
     {
       "title": "My first website",
       "event": "DeltaHacks 8",
       "year": 2022,
       "blurb": "Plain HTML and CSS, built over one weekend.",
-      "href": "https://devpost.com/software/my-website-t2rfh3"
+      "href": "https://devpost.com/software/my-website-t2rfh3",
+      "img": "DeltaHacks2022.png"
     },
     {
       "title": "NewHacks entry",
       "event": "NewHacks",
       "year": 2021,
       "blurb": "My team's attempt, in Python.",
-      "href": "https://github.com/JaakLipp/NewHacks2021"
+      "href": "https://github.com/JaakLipp/NewHacks2021",
+      "img": "NewHacks2022.png"
     },
     {
       "title": "MEC 2021 submission",
       "event": "McMaster Engineering Competition",
       "year": 2021,
       "blurb": "My team's entry to the 2021 programming competition.",
-      "href": "https://github.com/JaakLipp/MacEngComp2021"
+      "href": "https://github.com/JaakLipp/MacEngComp2021",
+      "img": "MacEngComp2021.png"
     }
   ]
 }
