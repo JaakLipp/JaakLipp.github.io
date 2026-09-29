@@ -39,7 +39,16 @@
         "PyTorch",
         "Psychophysics"
       ],
-      "links": [],
+      "links": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/JaakLipp/perfect-pitch"
+        },
+        {
+          "label": "Findings log",
+          "href": "https://github.com/JaakLipp/perfect-pitch/blob/main/REPORT.md"
+        }
+      ],
       "figure": {
         "src": "assets/projects/perfect-pitch-identification.png",
         "class": "plot",

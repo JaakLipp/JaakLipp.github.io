@@ -13,8 +13,14 @@ export function initCarousel(track) {
   const slides = [...track.children];
   const isProjects = track.classList.contains('projects-track');
 
-  const starts = () => slides.map((s) => s.offsetLeft - track.offsetLeft);
   const max = () => track.scrollWidth - track.clientWidth;
+  // Where each slide rests. Projects are centred so a middle slide shows a
+  // sliver of its neighbours on both sides; the first and last clamp to the ends.
+  const centred = track.classList.contains('projects-track');
+  const starts = () => slides.map((s) => {
+    const left = s.offsetLeft - track.offsetLeft;
+    return centred ? Math.max(0, Math.min(max(), left - (track.clientWidth - s.offsetWidth) / 2)) : left;
+  });
 
   // Glide to an x position. Snapping is paused while we animate, or the
   // browser would fight every frame.
