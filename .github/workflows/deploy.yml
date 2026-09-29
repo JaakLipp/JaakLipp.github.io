@@ -1,0 +1,58 @@
+name: Build & deploy
+
+on:
+  push:
+    branches: [main]
+  # Write a post from anywhere: open an issue with the `log` label.
+  issues:
+    types: [opened, edited, labeled, unlabeled, closed, reopened, deleted]
+  # Other repos can ping this one when they ship (see README).
+  repository_dispatch:
+    types: [project-update]
+  # Pick up new GitHub activity every day at 09:17 UTC.
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  issues: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # For issue events, only rebuild when the issue is (or was) a log post by the owner.
+    if: >-
+      github.event_name != 'issues' ||
+      (github.event.issue.user.login == github.repository_owner &&
+       (contains(github.event.issue.labels.*.name, 'log') || github.event.label.name == 'log'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build
+        run: node scripts/build.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SITE_OWNER: ${{ github.repository_owner }}
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

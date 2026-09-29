@@ -1,0 +1,49 @@
+{
+  "featured": [
+    {
+      "id": "scoregen",
+      "title": "ScoreGen",
+      "year": "2024–25",
+      "tagline": "Sing a melody, get sheet music.",
+      "summary": "Capstone project: a desktop app that turns live monophonic audio into sheet music. We wrote the signal-processing engine ourselves — pitch detection, onset detection, rhythm quantisation — then export to MusicXML and PDF.",
+      "role": "Capstone team of 4",
+      "stack": ["C++", "DSP", "MusicXML"],
+      "links": [{ "label": "GitHub", "href": "https://github.com/JaakLipp/ScoreGen" }],
+      "demo": { "kind": "anchor", "href": "#hero", "label": "Try the pitch detector at the top of this page" }
+    },
+    {
+      "id": "perfect-pitch",
+      "title": "perfect-pitch",
+      "year": "2026",
+      "tagline": "Why can some people just name a note?",
+      "summary": "A research model of how people with absolute pitch identify notes. It tests four hypotheses against human psychophysics: an information-bottleneck autoencoder for the critical-period idea, and a recurrent chroma-ring attractor that turns a smooth frequency into a hard category. Predictions are written down before each training run.",
+      "role": "Solo research",
+      "stack": ["Python", "PyTorch", "Psychophysics"],
+      "links": [],
+      "status": "In progress",
+      "demo": { "kind": "anchor", "href": "#ear", "label": "Play with the categorisation curve below" }
+    },
+    {
+      "id": "the-long-road",
+      "title": "The Long Road",
+      "year": "2026",
+      "tagline": "Couch co-op roguelite, 1–4 players, split-screen.",
+      "summary": "Weighty, Sifu-style combat with a branching Slay-the-Spire map. At every campfire the party votes on the route, so the couch gets an argument. Built in Godot 4 with a painterly low-poly look, and the art style is also what keeps 3D split-screen cheap enough to run.",
+      "role": "Solo dev · design, code, art pipeline",
+      "stack": ["Godot 4", "GDScript", "Game design"],
+      "links": [],
+      "status": "In development",
+      "play": null
+    }
+  ],
+  "archive": [
+    { "title": "AnswerMe", "event": "Hack the MIST", "year": 2023, "img": "HackTheMIST.png", "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Flask + Twilio.", "award": "3rd overall", "href": "https://devpost.com/software/answerme-ce2ip0" },
+    { "title": "World's Most Useful Website", "event": "uOttaHack", "year": 2023, "img": "UOttaHack.png", "blurb": "A full-stack React/Express/Mongo app that does absolutely nothing. I learned all my JavaScript that weekend.", "href": "https://devpost.com/software/world-s-most-useful-website-qg0k3s" },
+    { "title": "SightRead", "event": "DeltaHacks 9", "year": 2023, "img": "DeltaHacks9.png", "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. SwiftUI + OpenCV.", "href": "https://github.com/LaZeAsh/SightRead" },
+    { "title": "SteakAI", "event": "Hack Western 9", "year": 2022, "img": "HackWestern2022.png", "blurb": "Take a photo of your steak and a Keras CNN tells you how done it is.", "href": "https://github.com/JaakLipp/HackWestern2022" },
+    { "title": "Sailor's Best Friend", "event": "McMaster Eng. Competition", "year": 2022, "img": "MacEngComp2022.png", "blurb": "A Python tool for sailors built on Shapely geometry, made against the competition clock.", "href": "https://github.com/JaakLipp/MacEngComp2022" },
+    { "title": "My first website", "event": "DeltaHacks 8", "year": 2022, "img": "DeltaHacks2022.png", "blurb": "Where this site started: plain HTML and CSS, built over one weekend.", "href": "https://devpost.com/software/my-website-t2rfh3" },
+    { "title": "NewHacks entry", "event": "NewHacks", "year": 2021, "img": "NewHacks2022.png", "blurb": "Our group's attempt, in Python.", "href": "https://github.com/JaakLipp/NewHacks2021" },
+    { "title": "MEC 2021", "event": "McMaster Eng. Competition", "year": 2021, "img": "MacEngComp2021.png", "blurb": "Our team's submission to the 2021 programming competition.", "href": "https://github.com/JaakLipp/MacEngComp2021" }
+  ]
+}
