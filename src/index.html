@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Jackson Lippert</title>
-  <meta name="description" content="Jackson Lippert — software developer. I build things that listen: audio DSP, pitch-perception models, and games.">
+  <meta name="description" content="Jackson Lippert, software developer. Projects, hackathons, and what I'm building now.">
   <meta property="og:title" content="Jackson Lippert">
-  <meta property="og:description" content="Software developer. Audio, ML, and games. Sing a note to the homepage.">
+  <meta property="og:description" content="Software developer. Projects, hackathons, and what I'm building now.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#0d0c0b">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -23,7 +23,6 @@
     <a class="mark" href="#hero" aria-label="Home">JL</a>
     <nav aria-label="Sections">
       <a href="#work">Work</a>
-      <a href="#ear">Ear</a>
       <a href="#archive">Archive</a>
       <a href="#log">Log</a>
     </nav>
@@ -31,83 +30,32 @@
   </header>
 
   <main>
-    <!-- HERO: the chroma ring. Every pitch class sits on a circle; play or sing and the field snaps to it. -->
     <section id="hero" class="hero">
-      <canvas id="ring" aria-hidden="true"></canvas>
       <div class="hero-copy">
         <p class="eyebrow">Software developer · RBC · McMaster Software Engineering</p>
-        <h1>Hey, I'm Jackson.<br><em>I build things that listen.</em></h1>
-        <p class="lede">Audio DSP, models of how people hear pitch, and games you play on a couch together. This page listens too: play the ring or sing to it.</p>
+        <h1>Hey, I'm Jackson.<br><em>I like making cool stuff with software.</em></h1>
+        <p class="lede">Right now that means a couch co-op game in Godot, a research side project, and the capstone where we turned singing into sheet music. Before that came eight hackathons of weekend builds.</p>
         <div class="hero-actions">
-          <button class="btn primary" id="mic-btn" aria-pressed="false">
-            <span class="dot" aria-hidden="true"></span><span class="label">Sing to it</span>
-          </button>
-          <a class="btn" href="#work">See the work ↓</a>
+          <a class="btn primary" href="#work">See the work ↓</a>
+          <a class="btn" href="#contact">Get in touch</a>
         </div>
-        <p class="hint" id="hero-hint">Play with <kbd>A</kbd>–<kbd>J</kbd> (black keys <kbd>W</kbd><kbd>E</kbd><kbd>T</kbd><kbd>Y</kbd><kbd>U</kbd>), or click a note on the ring.</p>
       </div>
-      <output class="readout" id="readout" aria-live="polite">
-        <span class="note" id="readout-note">–</span>
-        <span class="cents" id="readout-cents"></span>
-        <span class="hz" id="readout-hz"></span>
-      </output>
     </section>
 
     <section id="work" class="section">
       <div class="section-head">
         <span class="num">01</span>
         <h2>Selected work</h2>
-        <p>Three current projects, all about sound, perception, or play.</p>
+        <p>What I've been building most recently.</p>
       </div>
       <div class="featured">
         <!--FEATURED-->
       </div>
     </section>
 
-    <!-- EAR: an interactive version of a perfect-pitch result -->
-    <section id="ear" class="section ear">
-      <div class="section-head">
-        <span class="num">02</span>
-        <h2>Test your ear</h2>
-        <p>This demo comes from <a href="#p-perfect-pitch">perfect-pitch</a>. Guess the note, then drag a tone between two notes and see where a model decides it switches from one to the other.</p>
-      </div>
-
-      <div class="ear-grid">
-        <div class="card game" id="game">
-          <div class="game-top">
-            <h3>Name that note</h3>
-            <div class="score"><span id="streak">0</span> streak · best <span id="best">0</span></div>
-          </div>
-          <p class="muted">Most people get about 1 in 12 by chance. People with absolute pitch hit 90%+ without a reference.</p>
-          <div class="keys" id="guess-keys" role="group" aria-label="Guess the note"></div>
-          <div class="game-actions">
-            <button class="btn primary" id="play-mystery">▶ Play mystery note</button>
-            <button class="btn ghost" id="replay-mystery" disabled>Replay</button>
-            <span class="verdict" id="verdict" aria-live="polite"></span>
-          </div>
-        </div>
-
-        <div class="card cp">
-          <div class="game-top">
-            <h3>Where does C become C♯?</h3>
-            <div class="toggle" role="radiogroup" aria-label="Model">
-              <button role="radio" aria-checked="true" data-model="attractor">Attractor</button>
-              <button role="radio" aria-checked="false" data-model="control">No recurrence</button>
-            </div>
-          </div>
-          <svg id="cp-plot" viewBox="0 0 520 230" role="img" aria-label="Probability of labelling the tone C or C sharp as it is detuned from 0 to 100 cents"></svg>
-          <label class="slider">
-            <span>Detune: <strong id="cents-val">+0¢</strong> above C4</span>
-            <input type="range" id="cents" min="-50" max="150" value="0" step="1">
-          </label>
-          <p class="muted small">Curve shapes follow my model's identification curves (seed 0). With recurrent feedback the answer flips suddenly at the halfway point. Without it the model hedges across a wide range. Humans with absolute pitch behave like the first one.</p>
-        </div>
-      </div>
-    </section>
-
     <section id="archive" class="section">
       <div class="section-head">
-        <span class="num">03</span>
+        <span class="num">02</span>
         <h2>Hackathon archive</h2>
         <p>2021–2023: eight weekends of learning a stack from scratch and shipping something on Sunday.</p>
       </div>
@@ -118,7 +66,7 @@
 
     <section id="log" class="section">
       <div class="section-head">
-        <span class="num">04</span>
+        <span class="num">03</span>
         <h2>Log</h2>
         <p>Notes and shipped work. Built automatically from GitHub, last updated <time id="built-at"><!--BUILT_AT--></time>. <a href="feed.xml">RSS</a></p>
       </div>
@@ -131,7 +79,7 @@
   <footer class="footer" id="contact">
     <h2>Let's talk.</h2>
     <ul class="contact">
-      <li><a href="mailto:lippertj@mcmaster.ca">lippertj@mcmaster.ca</a></li>
+      <li><a href="mailto:lippert.22j@gmail.com">lippert.22j@gmail.com</a></li>
       <li><a href="https://github.com/JaakLipp">GitHub</a></li>
       <li><a href="https://www.linkedin.com/in/jacksonlippert/">LinkedIn</a></li>
     </ul>
@@ -140,7 +88,7 @@
 
   <!-- Command palette -->
   <dialog id="palette" aria-label="Command palette">
-    <input id="palette-input" type="text" placeholder="Jump to… (try “sing”, “play”, “github”)" autocomplete="off" spellcheck="false">
+    <input id="palette-input" type="text" placeholder="Jump to… (try “scoregen”, “github”, “email”)" autocomplete="off" spellcheck="false">
     <ul id="palette-list" role="listbox"></ul>
   </dialog>
 

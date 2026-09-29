@@ -4,11 +4,9 @@ My portfolio. Plain HTML/CSS/JS, no framework, no dependencies. It's built by a 
 
 ```
 src/                 the site (index.html is a template; the build fills in the <!--MARKERS-->)
-  js/audio.js        synth + YIN pitch detector (mic)
-  js/ring.js         hero chroma-ring particle attractor
-  js/ear.js          "name that note" + categorical-perception plot
+  js/audio.js        synth + YIN pitch detector (mic) for the ScoreGen demo
   js/visuals.js      live staff (ScoreGen card), procedural valley (The Long Road card)
-  js/main.js         wiring, keyboard piano, command palette (Ctrl+K)
+  js/main.js         wiring, scroll reveal, command palette (Ctrl+K)
 content/
   projects.json      featured projects + hackathon archive: edit this to change the work sections
   posts/*.md         log posts (frontmatter: title, date, summary, draft)

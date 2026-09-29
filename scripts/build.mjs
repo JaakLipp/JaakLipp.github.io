@@ -110,15 +110,25 @@ function fileNotes() {
 }
 
 // ---------- templates ----------
+// The one hands-on demo on the page: sing (or tap a key) and the note lands on a staff.
+const WHITE = [['C', 60], ['D', 62], ['E', 64], ['F', 65], ['G', 67], ['A', 69], ['B', 71], ['C', 72]];
+const scoregenDemo = `<div class="visual demo">
+  <canvas data-visual="scoregen" aria-label="Staff showing the notes you sing or play"></canvas>
+  <div class="demo-bar">
+    <button class="btn primary" id="mic-btn" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span class="label">Sing a note</span></button>
+    <div class="mini-keys" role="group" aria-label="Play a note">${WHITE.map(([n, m]) => `<button data-midi="${m}">${n}</button>`).join('')}</div>
+    <output class="readout" id="readout" aria-live="polite"><span id="readout-note">–</span> <span id="readout-cents"></span></output>
+  </div>
+</div>`;
+
 const featuredHTML = (p) => {
-  const visual = p.play
+  const visual = p.id === 'scoregen' ? scoregenDemo : p.play
     ? `<div class="visual"><canvas data-visual="${p.id}"></canvas><button class="btn primary play-btn" data-play="${esc(p.play)}" data-title="${esc(p.title)}">▶ Play in browser</button></div>`
     : p.id === 'perfect-pitch'
       ? `<div class="visual"><img src="assets/projects/perfect-pitch-identification.png" alt="Identification curves: the recurrent model switches label abruptly at 50 cents, the control model gradually" style="filter: invert(.92) hue-rotate(180deg); object-fit: contain; padding: 10px"><div class="overlay"><span>results/h3_seed0 · identification curves</span></div></div>`
-      : `<div class="visual"><canvas data-visual="${p.id}"></canvas><div class="overlay"><span>${p.id === 'scoregen' ? 'live · transcribing this page' : 'procedural · move your mouse'}</span>${p.status ? `<span>${esc(p.status)}</span>` : ''}</div></div>`;
+      : `<div class="visual"><canvas data-visual="${p.id}"></canvas><div class="overlay"><span>procedural · move your mouse</span>${p.status ? `<span>${esc(p.status)}</span>` : ''}</div></div>`;
   const links = [
     ...p.links.map((l) => `<a class="btn" href="${esc(l.href)}">${esc(l.label)} ↗</a>`),
-    p.demo && `<a class="btn ghost" href="${esc(p.demo.href)}">${esc(p.demo.label)}</a>`,
   ].filter(Boolean).join('');
   return `<article class="project card" id="p-${p.id}">
   <div>

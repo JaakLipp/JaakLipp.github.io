@@ -52,7 +52,7 @@ export function scoreStaff(canvas) {
     if (!notes.length) {
       g.fillStyle = 'rgba(184,173,161,0.8)';
       g.font = '12px "JetBrains Mono", monospace';
-      g.fillText('play the ring or sing; notes land here', left + 10, bottom + gap * 3.2);
+      g.fillText('sing or tap a key; notes land here', left + 10, bottom + gap * 3.2);
     }
 
     // newest note sits at the right; older ones glide left

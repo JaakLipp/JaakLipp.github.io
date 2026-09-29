@@ -1,66 +1,45 @@
 import { bus, play, startMic, stopMic, micOn, noteName } from './audio.js';
-import { initRing } from './ring.js';
-import { initGame, initCurve } from './ear.js';
 import { scoreStaff, longRoad } from './visuals.js';
 
-initRing(document.getElementById('ring'));
-initGame();
-initCurve();
 document.querySelectorAll('[data-visual="scoregen"]').forEach(scoreStaff);
 document.querySelectorAll('[data-visual="the-long-road"]').forEach(longRoad);
 
-// ---------- readout ----------
+// ---------- ScoreGen demo: sing or tap a key, the note lands on the staff ----------
 const rNote = document.getElementById('readout-note');
 const rCents = document.getElementById('readout-cents');
-const rHz = document.getElementById('readout-hz');
 bus.addEventListener('note', (e) => {
   if (e.detail.source === 'mic') return;
   rNote.textContent = noteName(e.detail.midi);
   rCents.textContent = '';
-  rHz.textContent = `${(440 * 2 ** ((e.detail.midi - 69) / 12)).toFixed(1)} Hz`;
 });
 bus.addEventListener('pitch', (e) => {
   if (!e.detail) return;
-  const { midi, hz } = e.detail;
-  const cents = Math.round((midi - Math.round(midi)) * 100);
-  rNote.textContent = noteName(midi);
-  rCents.textContent = `${cents >= 0 ? '+' : ''}${cents}¢ ${Math.abs(cents) < 8 ? '· in tune' : cents > 0 ? '· sharp' : '· flat'}`;
-  rHz.textContent = `${hz.toFixed(1)} Hz`;
+  const cents = Math.round((e.detail.midi - Math.round(e.detail.midi)) * 100);
+  rNote.textContent = noteName(e.detail.midi);
+  rCents.textContent = `${cents >= 0 ? '+' : ''}${cents}¢`;
 });
+document.querySelectorAll('.mini-keys [data-midi]').forEach((b) =>
+  b.addEventListener('click', () => play(+b.dataset.midi, { source: 'keys' })));
 
-// ---------- mic ----------
 const micBtn = document.getElementById('mic-btn');
 const micLabel = micBtn.querySelector('.label');
 async function toggleMic() {
   if (micOn()) {
     stopMic();
     micBtn.setAttribute('aria-pressed', 'false');
-    micLabel.textContent = 'Sing to it';
+    micLabel.textContent = 'Sing a note';
     return;
   }
   try {
     micLabel.textContent = 'Allow the mic…';
     await startMic();
     micBtn.setAttribute('aria-pressed', 'true');
-    micLabel.textContent = 'Listening. Hum a note';
-    document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+    micLabel.textContent = 'Listening (tap to stop)';
   } catch {
-    micLabel.textContent = 'Mic unavailable, use the keys';
+    micLabel.textContent = 'No mic, try the keys';
   }
 }
 micBtn.addEventListener('click', toggleMic);
-
-// ---------- computer keyboard as a piano ----------
-const KEYMAP = { a: 0, w: 1, s: 2, e: 3, d: 4, f: 5, t: 6, g: 7, y: 8, h: 9, u: 10, j: 11, k: 12 };
-let octaveShift = 0;
-addEventListener('keydown', (e) => {
-  if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
-  if (e.target.closest?.('input, textarea, dialog')) return;
-  const k = e.key.toLowerCase();
-  if (k === 'z') { octaveShift = Math.max(-2, octaveShift - 1); return; }
-  if (k === 'x') { octaveShift = Math.min(2, octaveShift + 1); return; }
-  if (k in KEYMAP) play(60 + 12 * octaveShift + KEYMAP[k], { source: 'keys' });
-});
 
 // ---------- click-to-load playable builds ----------
 document.querySelectorAll('[data-play]').forEach((btn) => btn.addEventListener('click', () => {
@@ -75,7 +54,7 @@ document.querySelectorAll('[data-play]').forEach((btn) => btn.addEventListener('
 const io = new IntersectionObserver((entries) => entries.forEach((en) => {
   if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
 }), { rootMargin: '0px 0px -10% 0px' });
-document.querySelectorAll('.section-head, .project, .ear-grid > .card, .hack, .log li').forEach((el) => {
+document.querySelectorAll('.section-head, .project, .hack, .log li').forEach((el) => {
   el.classList.add('reveal'); io.observe(el);
 });
 const navLinks = [...document.querySelectorAll('.topbar nav a')];
@@ -91,10 +70,7 @@ const list = document.getElementById('palette-list');
 const go = (hash) => () => document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
 const open = (url) => () => window.open(url, '_blank', 'noopener');
 const COMMANDS = [
-  { label: 'Sing to the ring', hint: 'mic', run: toggleMic },
-  { label: 'Play a random note', hint: 'audio', run: () => play(60 + Math.floor(Math.random() * 12), { source: 'palette' }) },
-  { label: 'Play a C major arpeggio', hint: 'audio', run: () => [60, 64, 67, 72].forEach((m, i) => setTimeout(() => play(m, { source: 'palette' }), i * 160)) },
-  { label: 'Name that note', hint: 'game', run: go('#ear') },
+  { label: 'Try the ScoreGen demo', hint: 'demo', run: () => { go('#p-scoregen')(); micBtn.focus({ preventScroll: true }); } },
   { label: 'Selected work', hint: 'section', run: go('#work') },
   { label: 'Hackathon archive', hint: 'section', run: go('#archive') },
   { label: 'Log', hint: 'section', run: go('#log') },
@@ -102,7 +78,7 @@ const COMMANDS = [
   ...[...document.querySelectorAll('.project')].map((p) => ({ label: p.querySelector('h3').textContent, hint: 'project', run: go('#' + p.id) })),
   { label: 'GitHub', hint: 'link', run: open('https://github.com/JaakLipp') },
   { label: 'LinkedIn', hint: 'link', run: open('https://www.linkedin.com/in/jacksonlippert/') },
-  { label: 'Email', hint: 'link', run: () => { location.href = 'mailto:lippertj@mcmaster.ca'; } },
+  { label: 'Email', hint: 'link', run: () => { location.href = 'mailto:lippert.22j@gmail.com'; } },
   { label: 'RSS feed', hint: 'link', run: open('feed.xml') },
 ];
 let shown = [], sel = 0;
