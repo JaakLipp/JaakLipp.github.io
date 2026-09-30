@@ -9,12 +9,23 @@ src/                 the site (index.html is a template; the build fills in the 
   js/main.js         wiring
   assets/fonts/      self-hosted IBM Plex (OFL), so there are no third-party requests
 content/
-  profile.json       name, role, education, skills: feeds the page, JSON-LD and llms.txt
+  profile.json       name, summary, education, skills: feeds the page, JSON-LD and llms.txt
+  Positions.csv      work experience, in LinkedIn's export format (see below)
   projects.json      projects + hackathons: edit this to change the work sections
   posts/*.md         log posts (frontmatter: title, date, summary, draft)
 scripts/build.mjs    src + content + GitHub API → dist/
 .github/workflows/deploy.yml
 ```
+
+## Updating experience from LinkedIn
+
+LinkedIn has no public API for this, and scraping breaks its terms. Use its data export:
+
+1. LinkedIn → **Settings → Data privacy → Get a copy of your data** → choose **Positions** (or everything).
+2. When the email arrives (usually within minutes), download the archive and copy its `Positions.csv` over `content/Positions.csv`.
+3. Commit and push. The Experience section, llms.txt and JSON-LD all rebuild from it.
+
+Each role shows its title, company and dates. If a role has a LinkedIn description, its first sentence becomes the card's one-liner. Leave descriptions empty for title-only cards.
 
 ## Run locally
 

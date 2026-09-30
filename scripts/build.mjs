@@ -109,6 +109,54 @@ function fileNotes() {
   }).filter((p) => !p.draft);
 }
 
+// ---------- experience, from LinkedIn's data export ----------
+// LinkedIn → Settings → Data privacy → Get a copy of your data → Positions.csv.
+// Drop the new file into content/ and the Experience section follows.
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', quoted = false;
+  text = text.replace(/^﻿/, '');
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(field); field = '';
+      if (row.some((f) => f !== '')) rows.push(row);
+      row = [];
+    } else field += c;
+  }
+  row.push(field);
+  if (row.some((f) => f !== '')) rows.push(row);
+  const [head, ...body] = rows;
+  return body.map((r) => Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] ?? '').trim()])));
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthIndex = (s) => { const [m, y] = s.split(' '); return +y * 12 + MONTHS.indexOf(m.slice(0, 3)); };
+const firstSentence = (s) => (s.split(/(?<=[.!?])\s/)[0] || '').slice(0, 140);
+
+function positions(file) {
+  if (!fs.existsSync(file)) return [];
+  return parseCSV(fs.readFileSync(file, 'utf8'))
+    .filter((p) => p.Title && p['Started On'])
+    .sort((a, b) => monthIndex(b['Started On']) - monthIndex(a['Started On']))
+    .map((p) => ({
+      role: p.Title,
+      org: p['Company Name'],
+      when: `${p['Started On']} – ${p['Finished On'] || 'Present'}`,
+      current: !p['Finished On'],
+      location: p.Location,
+      oneLiner: p.Description ? firstSentence(p.Description) : '',
+    }));
+}
+
 // ---------- templates ----------
 // The one hands-on demo on the page: sing (or tap a key) and the note lands on a staff.
 const WHITE = [['C', 60], ['D', 62], ['E', 64], ['F', 65], ['G', 67], ['A', 69], ['B', 71], ['C', 72]];
@@ -156,11 +204,11 @@ const featuredHTML = (p, i, all) => {
 </article>`;
 };
 
-const jobHTML = (e) => `<article class="job reveal">
+const jobHTML = (e) => `<article class="job reveal${e.current ? ' current' : ''}">
   <p class="when">${esc(e.when)}</p>
   <h3>${esc(e.role)}</h3>
   <p class="org">${esc(e.org)}</p>
-  <ul class="did">${e.points.map((pt) => `<li>${esc(pt)}</li>`).join('')}</ul>
+  ${e.oneLiner ? `<p class="one-liner">${esc(e.oneLiner)}</p>` : ''}
 </article>`;
 
 const archiveHTML = (h) => {
@@ -256,10 +304,8 @@ This is the plain-text version of ${SITE_URL}/, the personal site of ${pr.name}.
 
 ## Experience
 
-${pr.experience.filter((e) => e.points?.length).map((e) => `### ${e.role}, ${e.org} (${e.when})
+${pr.experience.map((e) => `- ${e.role}, ${e.org} (${e.when})${e.oneLiner ? `: ${e.oneLiner}` : ''}`).join('\n')}
 
-${e.points.map((pt) => `- ${pt}`).join('\n')}
-`).join('\n')}
 ## Projects
 
 ${projects.featured.map((p) => `### ${p.title}
@@ -299,6 +345,7 @@ fs.cpSync(SRC, DIST, { recursive: true });
 
 const projects = JSON.parse(fs.readFileSync(path.join(CONTENT, 'projects.json'), 'utf8'));
 const profile = JSON.parse(fs.readFileSync(path.join(CONTENT, 'profile.json'), 'utf8'));
+profile.experience = positions(path.join(CONTENT, 'Positions.csv'));
 const [issues, events] = await Promise.all([issueNotes(), activity()]);
 const notes = [...fileNotes(), ...issues].sort((a, b) => b.date.localeCompare(a.date));
 const log = [...notes, ...events].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 24);
@@ -319,7 +366,7 @@ html = html
   .replace('<!--JSONLD-->', jsonLd(profile, projects))
   .replace('<!--SUMMARY-->', esc(profile.summary))
   .replace('<!--FACTS-->', facts)
-  .replace('<!--EXPERIENCE-->', profile.experience.filter((e) => e.points?.length).map(jobHTML).join('\n'))
+  .replace('<!--EXPERIENCE-->', profile.experience.map(jobHTML).join('\n'))
   .replace('<!--FEATURED-->', projects.featured.map(featuredHTML).join('\n'))
   .replace('<!--ARCHIVE-->', projects.archive.map(archiveHTML).join('\n'));
 if (html.includes('<!--')) throw new Error('Unfilled template marker in index.html');
