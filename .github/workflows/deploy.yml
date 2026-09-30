@@ -6,7 +6,7 @@ on:
   # Write a post from anywhere: open an issue with the `log` label.
   issues:
     types: [opened, edited, labeled, unlabeled, closed, reopened, deleted]
-  # Other repos can ping this one when they ship (see README).
+  # Other repos can trigger a rebuild when they ship.
   repository_dispatch:
     types: [project-update]
   # Pick up new GitHub activity every day at 09:17 UTC.

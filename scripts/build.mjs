@@ -4,7 +4,7 @@
 // Log entries come from three places:
 //   1. content/posts/*.md             notes written in the repo
 //   2. open issues labelled `log`     written from anywhere, even a phone; only the owner's count
-//   3. public GitHub activity         releases, new repos, and pushes to your repos
+//   3. public GitHub activity         releases, new repos and pushes
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -158,7 +158,7 @@ function positions(file) {
 }
 
 // ---------- templates ----------
-// The one hands-on demo on the page: sing (or tap a key) and the note lands on a staff.
+// ScoreGen demo: sing or tap a key and the note lands on a staff.
 const WHITE = [['C', 60], ['D', 62], ['E', 64], ['F', 65], ['G', 67], ['A', 69], ['B', 71], ['C', 72]];
 // Black keys sit on the boundary after the white key at index `after`.
 const BLACK = [['C♯', 61, 0], ['D♯', 63, 1], ['F♯', 66, 3], ['G♯', 68, 4], ['A♯', 70, 5]];
@@ -264,7 +264,7 @@ ${entries.map((e) => {
 
 // ---------- machine-readable profile ----------
 // These state the same facts as the visible page, in formats that search engines
-// and AI agents parse reliably. Nothing here is hidden from human visitors.
+// and AI agents parse reliably.
 const jsonLd = (pr, projects) => JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
@@ -326,8 +326,7 @@ ${notes.map((n) => `- [${n.title}](${SITE_URL}/log/${n.slug}.html): ${n.summary}
 - [RSS feed](${SITE_URL}/feed.xml)
 `;
 
-const robots = () => `# Everyone is welcome, including search engines and AI agents.
-User-agent: *
+const robots = () => `User-agent: *
 Allow: /
 
 Sitemap: ${SITE_URL}/sitemap.xml
