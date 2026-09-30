@@ -204,12 +204,11 @@ const featuredHTML = (p, i, all) => {
 </article>`;
 };
 
-const jobHTML = (e) => `<article class="job reveal${e.current ? ' current' : ''}">
-  <p class="when">${esc(e.when)}</p>
-  <h3>${esc(e.role)}</h3>
-  <p class="org">${esc(e.org)}</p>
-  ${e.oneLiner ? `<p class="one-liner">${esc(e.oneLiner)}</p>` : ''}
-</article>`;
+// One thin row per role (and one for education) under the intro summary.
+const rowHTML = ({ when: dates, title, org, note, current }) => `<li class="row${current ? ' current' : ''}">
+  <span class="when">${esc(dates)}</span>
+  <span class="what"><strong>${esc(title)}</strong> <span class="org">${esc(org)}</span>${note ? `<span class="note">${esc(note)}</span>` : ''}</span>
+</li>`;
 
 const archiveHTML = (h) => {
   const title = h.href ? `<a href="${esc(h.href)}">${esc(h.title)}</a>` : esc(h.title);
@@ -352,11 +351,10 @@ const log = [...notes, ...events].sort((a, b) => b.date.localeCompare(a.date)).s
 console.log(`  ${notes.length} notes (${issues.length} from issues), ${events.length} activity items`);
 
 const builtAt = new Date();
-const facts = [
-  ['Now', esc(`${profile.experience[0].role}, ${profile.experience[0].org}`)],
-  ...profile.education.map((e) => ['Studied', esc(`${e.degree}, ${e.org}${when(e)}`)]),
-  ['Email', `<a href="mailto:${esc(profile.email)}">${esc(profile.email)}</a>`],
-].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n        ');
+const timeline = [
+  ...profile.experience.map((e) => ({ when: e.when, title: e.role, org: e.org, note: e.oneLiner, current: e.current })),
+  ...profile.education.map((e) => ({ when: e.when ? `Graduated ${e.when}` : '', title: e.degree, org: e.org })),
+].map(rowHTML).join('\n        ');
 
 let html = fs.readFileSync(path.join(SRC, 'index.html'), 'utf8');
 html = html
@@ -365,8 +363,7 @@ html = html
   .replaceAll('<!--EMAIL-->', esc(profile.email))
   .replace('<!--JSONLD-->', jsonLd(profile, projects))
   .replace('<!--SUMMARY-->', esc(profile.summary))
-  .replace('<!--FACTS-->', facts)
-  .replace('<!--EXPERIENCE-->', profile.experience.map(jobHTML).join('\n'))
+  .replace('<!--EXPERIENCE-->', timeline)
   .replace('<!--FEATURED-->', projects.featured.map(featuredHTML).join('\n'))
   .replace('<!--ARCHIVE-->', projects.archive.map(archiveHTML).join('\n'));
 if (html.includes('<!--')) throw new Error('Unfilled template marker in index.html');
