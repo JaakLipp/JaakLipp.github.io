@@ -12,24 +12,54 @@
     {
       "role": "Software Developer",
       "org": "RBC",
-      "when": ""
+      "when": "Now",
+      "points": []
+    },
+    {
+      "role": "Software Developer Co-op",
+      "org": "Royal Bank of Canada",
+      "when": "May–Aug 2024",
+      "points": [
+        "Built an API to replace a robotic process automation workflow, saving $4,000 a year.",
+        "Created an extract-load-transform layer for hundreds of daily transactions.",
+        "Automated onboarding for new RBC Trust clients, saving a day per client.",
+        "Presented a cloud migration plan to the infrastructure platform team that shaped RBC Investor Services' development plans."
+      ]
+    },
+    {
+      "role": "Software Quality Engineer Co-op",
+      "org": "EllisDon",
+      "when": "May 2023–Apr 2024",
+      "points": [
+        "Became the sole quality engineer on an agile Scrum team, taking over from my supervisor and testing more than 250 tickets.",
+        "Automated and documented API tests with REST Assured and Selenium, cutting regression testing time by 20%.",
+        "Grew automated test coverage by 15% as the application expanded.",
+        "Led performance testing that cut network-call load times by more than 50%."
+      ]
     }
   ],
   "education": [
     {
       "degree": "B.Eng. Software Engineering",
       "org": "McMaster University",
-      "when": ""
+      "when": "2025",
+      "note": "President's Award Entrance Scholarship"
     }
   ],
   "skills": [
-    "C++",
     "Python",
-    "PyTorch",
-    "JavaScript",
     "Java",
+    "C++",
+    "C",
+    "JavaScript (React, Node.js)",
+    "SQL",
+    "PyTorch",
     "Godot / GDScript",
     "Signal processing",
-    "Machine learning"
+    "REST Assured",
+    "Selenium",
+    "Git",
+    "Jira",
+    "Linux"
   ]
 }

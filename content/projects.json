@@ -61,10 +61,15 @@
       "title": "ScoreGen",
       "year": "2024–25",
       "role": "Capstone, team of 4",
-      "summary": "A desktop app that turns live monophonic audio into sheet music. We wrote our own signal-processing engine for pitch detection, onset detection and rhythm quantisation. It exports to WAV, MusicXML and PDF.",
-      "did": [],
+      "summary": "A desktop app that turns live monophonic audio into sheet music. Our team wrote our own signal-processing engine in C++ with an Electron front end, and it exports to WAV, MusicXML and PDF.",
+      "did": [
+        "Implemented pitch detection in C++ using autocorrelation with Hann windowing, plus onset and note-duration extraction from recorded audio.",
+        "Connected the Electron front end to the C++ back end, and built parts of the recording and navigation UI, including accessibility fixes (WCAG, alt and tooltip text).",
+        "Wrote the formal design documents: module interface semantics, the module guide, and the V&V plan's traceability and non-functional tests. 48 of the team's 170 commits."
+      ],
       "stack": [
         "C++",
+        "Electron",
         "Signal processing",
         "MusicXML"
       ],
@@ -91,7 +96,7 @@
       "title": "AnswerMe",
       "event": "Hack the MIST",
       "year": 2023,
-      "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Built with Flask and Twilio.",
+      "blurb": "Text or call a phone number and ChatGPT answers, no internet needed. Built in 24 hours with Flask, Twilio and the OpenAI API, against 150+ participants.",
       "award": "3rd overall",
       "href": "https://devpost.com/software/answerme-ce2ip0",
       "img": "HackTheMIST.png"
@@ -108,7 +113,7 @@
       "title": "SightRead",
       "event": "DeltaHacks 9",
       "year": 2023,
-      "blurb": "A Braille app that translates text to Braille and photos of Braille back to text and speech. Built with SwiftUI and OpenCV.",
+      "blurb": "A Braille learning and translation app. I built the OpenCV image recognition and Braille translation, and the REST API between Firebase and the back end.",
       "href": "https://github.com/LaZeAsh/SightRead",
       "img": "DeltaHacks9.png"
     },
@@ -122,9 +127,9 @@
     },
     {
       "title": "Sailor's Best Friend",
-      "event": "McMaster Engineering Competition",
+      "event": "McMaster Engineering Competition, Programming",
       "year": 2022,
-      "blurb": "A Python tool for sailors built on Shapely geometry.",
+      "blurb": "Software that safely guides ships around obstacles, written in Python with Shapely geometry.",
       "href": "https://github.com/JaakLipp/MacEngComp2022",
       "award": "3rd place",
       "img": "MacEngComp2022.png"
