@@ -16,6 +16,8 @@ const revealer = new IntersectionObserver((entries) => entries.forEach((e) => {
   if (e.isIntersecting) { e.target.classList.add('in'); revealer.unobserve(e.target); }
 }), { rootMargin: '0px 0px -8% 0px' });
 document.querySelectorAll('.reveal').forEach((el) => revealer.observe(el));
+// The experience timeline draws its rail and dots once it scrolls into view.
+document.querySelectorAll('.tl').forEach((el) => revealer.observe(el));
 // The project carousel fades in as one piece.
 const work = document.getElementById('work-track');
 work.classList.add('reveal');

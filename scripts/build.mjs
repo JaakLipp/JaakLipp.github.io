@@ -204,10 +204,13 @@ const featuredHTML = (p, i, all) => {
 </article>`;
 };
 
-// One thin row per role (and one for education) under the intro summary.
-const rowHTML = ({ when: dates, title, org, note, current }) => `<li class="row${current ? ' current' : ''}">
-  <span class="when">${esc(dates)}</span>
-  <span class="what"><strong>${esc(title)}</strong> <span class="org">${esc(org)}</span>${note ? `<span class="note">${esc(note)}</span>` : ''}</span>
+// A horizontal timeline (vertical on phones), oldest on the left.
+const stopHTML = ({ when: dates, title, org, note, current, kind }) => `<li class="stop${current ? ' current' : ''}${kind ? ` ${kind}` : ''}">
+  <span class="dot" aria-hidden="true"></span>
+  <p class="when">${esc(dates)}</p>
+  <h3>${esc(title)}</h3>
+  <p class="org">${esc(org)}</p>
+  ${note ? `<p class="note">${esc(note)}</p>` : ''}
 </li>`;
 
 const archiveHTML = (h) => {
@@ -351,10 +354,12 @@ const log = [...notes, ...events].sort((a, b) => b.date.localeCompare(a.date)).s
 console.log(`  ${notes.length} notes (${issues.length} from issues), ${events.length} activity items`);
 
 const builtAt = new Date();
+// Roles sort by start month. A year-only graduation sorts just before any role
+// that starts that April, so it lands between the co-ops and the full-time job.
 const timeline = [
-  ...profile.experience.map((e) => ({ when: e.when, title: e.role, org: e.org, note: e.oneLiner, current: e.current })),
-  ...profile.education.map((e) => ({ when: e.when ? `Graduated ${e.when}` : '', title: e.degree, org: e.org })),
-].map(rowHTML).join('\n        ');
+  ...profile.experience.map((e) => ({ key: monthIndex(e.when.split(' – ')[0]), when: e.when, title: e.role, org: e.org, note: e.oneLiner, current: e.current })),
+  ...profile.education.map((e) => ({ key: +e.when * 12 + 2.5, when: `Graduated ${e.when}`, title: e.degree, org: e.org, kind: 'edu' })),
+].sort((a, b) => a.key - b.key).map(stopHTML).join('\n        ');
 
 let html = fs.readFileSync(path.join(SRC, 'index.html'), 'utf8');
 html = html

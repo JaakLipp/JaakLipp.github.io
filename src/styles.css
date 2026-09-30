@@ -92,27 +92,67 @@ main, .footer, .topbar { max-width: var(--wide); margin-inline: auto; }
 .intro h1 { font-size: clamp(2.2rem, 5.4vw, 4.2rem); margin: 0 0 24px; max-width: 16em; letter-spacing: -0.03em; }
 .intro h1 span { color: var(--ink-3); }
 .lede { font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--ink-2); margin: 0 0 32px; max-width: 42em; }
-.timeline { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; max-width: 58rem; }
-.timeline .row {
-  display: grid; grid-template-columns: 12rem 1fr; align-items: baseline; gap: 4px 20px;
-  padding: 12px 18px;
-  background: var(--surface); border: 1px solid var(--line);
-  transition: border-color .25s, transform .35s var(--ease), background .25s;
-}
-.timeline .row:hover { border-color: var(--line-2); background: var(--surface-2); transform: translateX(4px); }
-.timeline .when { font: 0.8rem var(--mono); color: var(--ink-3); }
-.timeline .row.current .when { color: var(--accent); }
-.timeline strong { font-weight: 600; }
-.timeline .org { color: var(--ink-2); }
-.timeline .org::before { content: "· "; color: var(--ink-3); }
-.timeline .note { display: block; color: var(--ink-2); font-size: 0.9rem; margin-top: 2px; }
-@media (max-width: 560px) { .timeline .row { grid-template-columns: 1fr; } }
 
 /* ---------- sections ---------- */
 .band { padding-top: clamp(72px, 10vw, 120px); }
 .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; margin-bottom: 24px; }
 .section-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 6px; }
 .section-note { color: var(--ink-2); margin: 0; font-size: 0.97rem; max-width: 46em; }
+
+/* ---------- experience timeline ---------- */
+.tl {
+  --dot: 14px;
+  position: relative; list-style: none; margin: 0; padding: 0;
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px;
+}
+/* the rail, which draws in from the left */
+.tl::before {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(var(--dot) / 2 - 1px); height: 2px;
+  background: linear-gradient(90deg, var(--line-2), var(--accent));
+  transform-origin: left; transform: scaleX(0); transition: transform 1.4s var(--ease);
+}
+.tl.in::before { transform: scaleX(1); }
+.stop { position: relative; padding-top: calc(var(--dot) + 20px); padding-right: 12px; }
+.stop .dot {
+  position: absolute; top: 0; left: 0; width: var(--dot); height: var(--dot);
+  background: var(--bg); border: 2px solid var(--ink-3);
+  transform: scale(0); transition: transform .5s var(--ease), border-color .3s, background .3s;
+}
+.stop.current .dot { border-color: var(--accent); background: var(--accent); }
+.stop.current .dot::after {
+  content: ""; position: absolute; inset: -8px; border: 1px solid var(--accent); opacity: 0;
+  animation: ping 2.4s var(--ease) infinite 1.6s;
+}
+@keyframes ping { 0% { transform: scale(.5); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
+.stop > :not(.dot) { opacity: 0; transform: translateY(10px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.tl.in .stop .dot { transform: scale(1); }
+.tl.in .stop > :not(.dot) { opacity: 1; transform: none; }
+.tl.in .stop:nth-child(2) > * { transition-delay: .3s; }
+.tl.in .stop:nth-child(3) > * { transition-delay: .6s; }
+.tl.in .stop:nth-child(4) > * { transition-delay: .9s; }
+.tl.in .stop:nth-child(5) > * { transition-delay: 1.2s; }
+.tl.in .stop:nth-child(n+6) > * { transition-delay: 1.4s; }
+.stop:hover .dot { border-color: var(--accent); }
+.stop .when { font: 0.8rem var(--mono); color: var(--ink-3); margin: 0 0 6px; }
+.stop.current .when { color: var(--accent); }
+.stop h3 { font-size: 1.1rem; margin: 0; }
+.stop .org { color: var(--ink-2); margin: 2px 0 0; }
+.stop .note { color: var(--ink-2); font-size: 0.9rem; margin: 8px 0 0; }
+/* no JS: show everything */
+html:not(.js) .tl::before, html:not(.js) .stop .dot { transform: none; }
+html:not(.js) .stop > * { opacity: 1; transform: none; }
+@media (max-width: 700px) {
+  .tl { grid-auto-flow: row; gap: 28px; padding-left: calc(var(--dot) + 18px); }
+  .tl::before { left: calc(var(--dot) / 2 - 1px); right: auto; top: 0; bottom: 0; width: 2px; height: auto;
+    background: linear-gradient(180deg, var(--line-2), var(--accent)); transform-origin: top; transform: scaleY(0); }
+  .tl.in::before { transform: scaleY(1); }
+  .stop { padding-top: 0; }
+  .stop .dot { left: calc(-1 * (var(--dot) + 18px)); top: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl::before, .stop .dot, .stop > * { transition: none !important; }
+  .stop.current .dot::after { animation: none; }
+}
 
 /* ---------- carousels ---------- */
 .carousel {
@@ -295,7 +335,6 @@ main, .footer, .topbar { max-width: var(--wide); margin-inline: auto; }
 /* ---------- motion ---------- */
 .rise { opacity: 0; transform: translateY(16px); animation: rise .9s var(--ease) forwards; }
 .lede.rise { animation-delay: .12s; }
-.timeline.rise { animation-delay: .24s; }
 @keyframes rise { to { opacity: 1; transform: none; } }
 .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
 .js .reveal.in { opacity: 1; transform: none; }
